@@ -376,19 +376,19 @@ export interface EncodedPluginData {
          * `${pluginPublisher}.${id}`
          * ```
          *
-         * @example "8crafer.my-custom-plugin"
+         * @example "8crafter.my-custom-plugin"
          */
         marketplaceId: string;
         /**
          * The original download URL of the plugin in the marketplace.
          *
-         * @example "https://marketplace.ore-ui-customizer.8crafter.com/download/plugin/8crafer.my-custom-plugin/1.0.0"
+         * @example "https://marketplace.ore-ui-customizer.8crafter.com/download/plugin/8crafter.my-custom-plugin/1.0.0"
          */
         originalDownloadURL: string;
         /**
          * The URL of the plugin in the marketplace.
          *
-         * @example "https://marketplace.ore-ui-customizer.8crafter.com/plugin/8crafer.my-custom-plugin"
+         * @example "https://marketplace.ore-ui-customizer.8crafter.com/plugin/8crafter.my-custom-plugin"
          */
         marketplaceURL: string;
     };
@@ -467,7 +467,7 @@ export interface PluginManifestJSON {
         /**
          * The UUID of the plugin, used to uniquely identify the plugin.
          *
-         * Must be a valid UUID.
+         * Must be a valid UUID v4.
          *
          * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
          */
@@ -495,7 +495,7 @@ export interface PluginManifestJSON {
          */
         version: string;
         /**
-         * The version of 8Crafter's Ore UI Customizer that this plugin is made for.
+         * The version of 8Crafter's Ore UI Customizer that this version of this plugin is made for.
          *
          * This must be a valid semver string, without the leading `v`.
          *
@@ -623,19 +623,19 @@ export interface PluginManifestJSON {
          * `${pluginPublisher}.${id}`
          * ```
          *
-         * @example "8crafer.my-custom-plugin"
+         * @example "8crafter.my-custom-plugin"
          */
         marketplaceId: string;
         /**
          * The original download URL of the plugin in the marketplace.
          *
-         * @example "https://marketplace.ore-ui-customizer.8crafter.com/download/plugin/8crafer.my-custom-plugin/1.0.0"
+         * @example "https://marketplace.ore-ui-customizer.8crafter.com/download/plugin/8crafter.my-custom-plugin/1.0.0"
          */
         originalDownloadURL: string;
         /**
          * The URL of the plugin in the marketplace.
          *
-         * @example "https://marketplace.ore-ui-customizer.8crafter.com/plugin/8crafer.my-custom-plugin"
+         * @example "https://marketplace.ore-ui-customizer.8crafter.com/plugin/8crafter.my-custom-plugin"
          */
         marketplaceURL: string;
     };
@@ -811,19 +811,19 @@ export interface ThemeManifestJSON {
          * `${themePublisher}.${id}`
          * ```
          *
-         * @example "8crafer.my-custom-theme"
+         * @example "8crafter.my-custom-theme"
          */
         marketplaceId: string;
         /**
          * The original download URL of the theme in the marketplace.
          *
-         * @example "https://marketplace.ore-ui-customizer.8crafter.com/download/theme/8crafer.my-custom-theme/1.0.0"
+         * @example "https://marketplace.ore-ui-customizer.8crafter.com/download/theme/8crafter.my-custom-theme/1.0.0"
          */
         originalDownloadURL: string;
         /**
          * The URL of the theme in the marketplace.
          *
-         * @example "https://marketplace.ore-ui-customizer.8crafter.com/theme/8crafer.my-custom-theme"
+         * @example "https://marketplace.ore-ui-customizer.8crafter.com/theme/8crafter.my-custom-theme"
          */
         marketplaceURL: string;
     };
@@ -1009,19 +1009,19 @@ export interface OreUICustomizerConfig {
          * `${configPublisher}.${id}`
          * ```
          *
-         * @example "8crafer.my-custom-config"
+         * @example "8crafter.my-custom-config"
          */
         marketplaceId: string;
         /**
          * The original download URL of the config in the marketplace.
          *
-         * @example "https://marketplace.ore-ui-customizer.8crafter.com/download/config/8crafer.my-custom-config/1.0.0"
+         * @example "https://marketplace.ore-ui-customizer.8crafter.com/download/config/8crafter.my-custom-config/1.0.0"
          */
         originalDownloadURL: string;
         /**
          * The URL of the config in the marketplace.
          *
-         * @example "https://marketplace.ore-ui-customizer.8crafter.com/config/8crafer.my-custom-config"
+         * @example "https://marketplace.ore-ui-customizer.8crafter.com/config/8crafter.my-custom-config"
          */
         marketplaceURL: string;
     };
