@@ -1204,7 +1204,7 @@ export interface PluginActionBase {
      *
      * - `per_text_file`: The plugin action is run once per file, with the file passed into the plugin action. This only targets files with text content. It currently targets the following file types: `.txt`, `.md`, `.js`, `.jsx`, `.html`, `.css`, `.json`, `.jsonc`, `.jsonl`.
      * - `per_binary_file`: The plugin action is run once per file, with the file passed into the plugin action. This only targets files with non-text content. It currently targets all file types except for the following file types: `.txt`, `.md`, `.js`, `.jsx`, `.html`, `.css`, `.json`, `.jsonc`, `.jsonl`.
-     * - `global_before`: The plugin action is before the other plugin actions have been run, with the zip file system object passed into the plugin action.
+     * - `global_before`: The plugin action is before the other plugin actions have been run, with the zip file system object passed into the plugin action. Actions using this context are able to modify the config of the Ore UI Customizer before it starts applying it.
      * - `global`: The plugin action is run once all other plugin actions have been run, with the zip file system object passed into the plugin action.
      */
     context: PluginActionContext;
@@ -1229,7 +1229,7 @@ export interface PerTextFilePluginAction extends PluginActionBase {
      * @returns {string | Promise<string>} The new text content of the file as a string, or a promise resolving to a string.
      * @throws {Error} If the action is unable to do what it needs to, make it throw an error.
      */
-    action: (currentFileContent: string, file: zip.ZipFileEntry<any, any>, zip: zip.FS) => string | Promise<string>;
+    action(currentFileContent: string, file: zip.ZipFileEntry<any, any>, zip: zip.FS): string | Promise<string>;
 }
 /**
  * An action for a {@link Plugin} with a context of `per_binary_file`.
@@ -1246,7 +1246,7 @@ export interface PerBinaryFilePluginAction extends PluginActionBase {
      * @returns {Blob | Promise<Blob>} The new binary content of the file as a {@link Blob}, or a promise resolving to a {@link Blob}.
      * @throws {Error} If the action is unable to do what it needs to, make it throw an error.
      */
-    action: (currentFileContent: Blob, file: zip.ZipFileEntry<any, any>, zip: zip.FS) => Blob | Promise<Blob>;
+    action(currentFileContent: Blob, file: zip.ZipFileEntry<any, any>, zip: zip.FS): Blob | Promise<Blob>;
 }
 /**
  * An action for a {@link Plugin} with a context of `global_before`.
