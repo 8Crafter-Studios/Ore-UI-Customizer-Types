@@ -4,7 +4,9 @@
     "description": "Types for 8Crafter's Ore UI Customizer.",
     "keywords": [
         "Ore UI",
+        "ore ui",
         "OreUI",
+        "oreui",
         "Minecraft",
         "minecraft",
         "MCBE",
@@ -35,11 +37,8 @@
     "type": "module",
     "exports": {
         ".": {
-            "default": "./index.d.ts",
-            "types": "./index.d.ts"
+            "types": "./index.d.ts",
+            "default": "./index.d.ts"
         }
-    },
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
     }
 }
