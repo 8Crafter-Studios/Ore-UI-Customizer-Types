@@ -1,5 +1,9 @@
 # v1.1.0
 
+## Additions
+
+-   Added the `make-export-world-button-visible` built-in plugin ID.
+
 ## Removals
 
 -   Removed the unused `scripts` field from the `package.json`.
