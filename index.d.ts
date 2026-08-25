@@ -186,6 +186,67 @@ export interface OreUICustomizerSettings {
         "rgba(5, 0, 41, 0.5)": string;
     };
     /**
+     * These are some more advanced color replacements for the UI colors.
+     */
+    advancedColorReplacements?: {
+        /**
+         * Color replacements options for the `menus-theme-*.css` file.
+         */
+        menusTheme?: {
+            ".menus"?: {
+                colorsPrimary?: string;
+                colorsSecondary?: string;
+                colorsDestructive?: string;
+                colorsText?: string;
+                colorsMuted0?: string;
+                colorsMuted1?: string;
+                colorsDisabled?: string;
+                baseTextFieldColor?: string;
+                baseTextFieldPlaceholderColor?: string;
+                baseTextFieldDisabledColor?: string;
+                baseTextFieldCaretColor?: string;
+                inputFieldPlaceholderUnderlineColor?: string;
+                inputLegendWrapperBackgroundColor?: string;
+                inputLegendWrapperBorderTopColor?: string;
+                inputLegendInputHintColor?: string;
+                buttonIconKeyboardTextColor?: string;
+            };
+            ".menus.realms"?: {
+                colorsPrimary?: string;
+            };
+            ".menus.neutral90"?: {
+                baseTextFieldColor?: string;
+                baseTextFieldPlaceholderColor?: string;
+                baseTextFieldColorDisabled?: string;
+                baseTextFieldPlaceholderColorDisabled?: string;
+            };
+        };
+        /**
+         * Custom color replacements options.
+         *
+         * These are inserted into cutstom CSS that is appended to the `menus-theme-*.css` file.
+         */
+        custom?: {
+            ".vanilla-neutral-text,.vanilla-neutral-text-interactive"?: {
+                color: string;
+            };
+            ".vanilla-neutral-text.dimmer, .vanilla-neutral-text-interactive.dimmer"?: {
+                color: string;
+            }
+            ".vanilla-neutral-text.dimmest,.vanilla-neutral-text-interactive.dimmest"?: {
+                color: string;
+            };
+        };
+        /**
+         * Color replacements options for the `gameplay-theme-*.css` file.
+         *
+         * @todo
+         */
+        // gameplayTheme?: {
+        //     ".gameplay"?: {}
+        // };
+    };
+    /**
      * A list of additional plugins to apply.
      *
      * This is only present when manually provided encoded plugin data to apply, or when {@link bundleEncodedPluginDataInConfigFile} is true.
