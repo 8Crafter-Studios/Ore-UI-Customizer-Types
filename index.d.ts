@@ -228,31 +228,31 @@ export interface OreUICustomizerSettings {
          */
         custom?: {
             ".vanilla-neutral-text,.vanilla-neutral-text-interactive"?: {
-                color: string;
+                color?: string;
             };
             ".vanilla-neutral-text.dimmer,.vanilla-neutral-text-interactive.dimmer"?: {
-                color: string;
+                color?: string;
             };
             ".vanilla-neutral-text.dimmest,.vanilla-neutral-text-interactive.dimmest"?: {
-                color: string;
+                color?: string;
             };
             ".realms-neutral80-text,.realms-neutral80-text-interactive"?: {
-                color: string;
+                color?: string;
             };
             ".realms-neutral80-text.dimmer,.realms-neutral80-text-interactive.dimmer"?: {
-                color: string;
+                color?: string;
             };
             ".realms-neutral80-text.dimmest,.realms-neutral80-text-interactive.dimmest"?: {
-                color: string;
+                color?: string;
             };
             ".realms-neutral-text,.realms-neutral-text-interactive"?: {
-                color: string;
+                color?: string;
             };
             ".realms-neutral-text.dimmer,.realms-neutral-text-interactive.dimmer"?: {
-                color: string;
+                color?: string;
             };
             ".realms-neutral-text.dimmest,.realms-neutral-text-interactive.dimmest"?: {
-                color: string;
+                color?: string;
             };
         };
         /**
