@@ -1,3 +1,15 @@
+# v1.2.0
+
+## Additions
+
+-   Added the `lite-play-screen-routes` built-in plugin ID.
+-   Added the `Theme` interface.
+-   Added the `ThemeColorReplacements` interface.
+-   Added the `advancedColorReplacements` field to the `OreUICustomizerSettings` interface.
+-   Added the `themes` field to the `OreUICustomizerSettings` interface.
+-   Added the `namespace` field to the `ThemeManifestJSON` interface.
+-   Add `@example` JSDoc tags to many `Plugin` and `EncodedPluginData` fields.
+
 # v1.1.0
 
 ## Additions

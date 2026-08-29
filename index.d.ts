@@ -1,7 +1,11 @@
 import type { zip } from "./zip";
+// IDEA: Dependency versions should be optional, and if not specified, support any version, it should also be able to have semver ranges, or just another format like and array of tuples of min and max semver versions.
+// IDEA: Add max_engine_version fields, also maybe add a way to set whether it is an inclusive or exclusive maximum.
 
 /**
  * An interface that contains the settings for 8Crafter's Ore UI Customizer.
+ *
+ * @todo Make a separate type from this for data from config files, since those are partial.
  */
 export interface OreUICustomizerSettings {
     /**
@@ -84,7 +88,7 @@ export interface OreUICustomizerSettings {
     /**
      * These are replacements for the UI colors.
      *
-     * @todo Make this functional.
+     * Setting a color to "" will prevent tat color from being replaced.
      */
     colorReplacements: {
         // /**
@@ -187,6 +191,8 @@ export interface OreUICustomizerSettings {
     };
     /**
      * These are some more advanced color replacements for the UI colors.
+     *
+     * Setting a color to "" will prevent tat color from being replaced.
      */
     advancedColorReplacements?: {
         /**
@@ -298,6 +304,15 @@ export interface OreUICustomizerSettings {
      * @default []
      */
     preloadedPlugins?: Plugin[];
+    // TODO: Maybe implement encoded theme data, like with encoded plugin data.
+    /**
+     * A list of themes to apply.
+     *
+     * This will only be present when passing a list of themes to the apply mods function.
+     *
+     * @default []
+     */
+    themes?: Theme[];
 }
 
 export interface EncodedPluginData {
@@ -306,7 +321,9 @@ export interface EncodedPluginData {
      */
     name: string;
     /**
-     * The id of the plugin, used to identify the plugin when applying the plugins, also used to identify the plugin in error messages, this should be unique.
+     * The id of the plugin, used to identify the plugin when applying the plugins, also used to identify the plugin in error messages, this should be unique when combined with the {@link namespace}.
+     *
+     * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the plugins that shared the namespace+id combo was being referred to in places like error messages.
      *
      * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
      */
@@ -321,6 +338,8 @@ export interface EncodedPluginData {
     uuid: string;
     /**
      * The namespace of the plugin, used in conjunction with the {@link id} to identify the plugin in error messages.
+     *
+     * This can be shared by multiple plugins.
      *
      * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
      *
@@ -431,7 +450,9 @@ export interface EncodedPluginData {
          */
         product_type?: "plugin";
         /**
-         * The license of the plugin
+         * The license of the plugin.
+         *
+         * @example "MIT"
          */
         license?: string;
         /**
@@ -536,7 +557,9 @@ export interface PluginManifestJSON {
          */
         name: string;
         /**
-         * The id of the plugin, used to identify the plugin when applying the plugins, also used to identify the plugin in error messages, this should be unique.
+         * The id of the plugin, used to identify the plugin when applying the plugins, also used to identify the plugin in error messages, this should be unique when combined with the {@link namespace}.
+         *
+         * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the plugins that shared the namespace+id combo was being referred to in places like error messages.
          *
          * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
          *
@@ -553,6 +576,8 @@ export interface PluginManifestJSON {
         uuid: string;
         /**
          * The namespace of the plugin, used in conjunction with the {@link id} to identify the plugin in error messages.
+         *
+         * This can be shared by multiple plugins.
          *
          * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
          *
@@ -677,6 +702,8 @@ export interface PluginManifestJSON {
         product_type: "plugin";
         /**
          * The license of the plugin.
+         *
+         * @example "MIT"
          */
         license?: string;
         /**
@@ -770,7 +797,9 @@ export interface ThemeManifestJSON {
          */
         name: string;
         /**
-         * The id of the theme, used to identify the theme when applying the themes, also used to identify the theme in error messages, this should be unique.
+         * The id of the theme, used to identify the theme when applying the themes, also used to identify the theme in error messages, this should be unique when combined with the {@link namespace}.
+         *
+         * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the themes that shared the namespace+id combo was being referred to in places like error messages.
          *
          * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
          *
@@ -785,6 +814,18 @@ export interface ThemeManifestJSON {
          * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
          */
         uuid: string;
+        /**
+         * The namespace of the theme, used in conjunction with the {@link id} to identify the theme in error messages.
+         *
+         * This can be shared by multiple themes.
+         *
+         * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+         *
+         * Must not be `built-in`, as it is reserved for built-in themes.
+         *
+         * @example "andexth"
+         */
+        namespace: string;
         /**
          * An optional description of the theme.
          */
@@ -865,6 +906,8 @@ export interface ThemeManifestJSON {
         product_type: "theme";
         /**
          * The license of the theme.
+         *
+         * @example "MIT"
          */
         license?: string;
         /**
@@ -935,6 +978,30 @@ export interface ThemeManifestJSON {
          */
         versionInfoURL: string;
     };
+}
+
+/**
+ * The data of the `color_replacements.json` file of a theme.
+ */
+export interface ThemeColorReplacements {
+    /**
+     * The version of the color replacements options.
+     *
+     * @default 1
+     */
+    format_version: 1;
+    /**
+     * These are replacements for the UI colors.
+     *
+     * Setting a color to "" will prevent tat color from being replaced.
+     */
+    colorReplacements?: Partial<OreUICustomizerSettings["colorReplacements"]>;
+    /**
+     * These are some more advanced color replacements for the UI colors.
+     *
+     * Setting a color to "" will prevent tat color from being replaced.
+     */
+    advancedColorReplacements?: OreUICustomizerSettings["advancedColorReplacements"];
 }
 
 /**
@@ -1063,6 +1130,8 @@ export interface OreUICustomizerConfig {
         product_type: "config";
         /**
          * The license of the config.
+         *
+         * @example "MIT"
          */
         license?: string;
         /**
@@ -1148,17 +1217,146 @@ export interface LegacyOreUICustomizerConfigJSON extends Partial<OreUICustomizer
 }
 
 /**
+ * A theme for 8Crafter's Ore UI Customizer.
+ */
+export interface Theme extends Pick<ThemeManifestJSON, "marketplaceDetails" | "checkForUpdatesDetails"> {
+    /**
+     * The display name of the theme.
+     *
+     * @example "My Custom Theme"
+     */
+    name: string;
+    /**
+     * The id of the theme, used to identify the theme when applying the themes, also used to identify the theme in error messages, this should be unique when combined with the {@link namespace}.
+     *
+     * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the themes that shared the namespace+id combo was being referred to in places like error messages.
+     *
+     * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+     *
+     * @example "my-custom-theme"
+     */
+    id: string;
+    /**
+     * The UUID of the theme, used to uniquely identify the theme.
+     *
+     * Must be a valid UUID.
+     *
+     * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
+     */
+    uuid: string;
+    /**
+     * The namespace of the theme, used in conjunction with the {@link id} to identify the theme in error messages.
+     *
+     * This can be shared by multiple themes.
+     *
+     * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+     *
+     * Must not be `built-in`, as it is reserved for built-in themes.
+     *
+     * @example "andexth"
+     */
+    namespace: string;
+    /**
+     * An optional description of the theme.
+     */
+    description?: string;
+    /**
+     * The version of the theme.
+     *
+     * This must be a valid semver string, without the leading `v`.
+     *
+     * @example "3.17.4-preview.20+BUILD.5"
+     */
+    version: string;
+    /**
+     * The zip file system of the theme.
+     */
+    zip: zip.FS;
+    /**
+     * The version of 8Crafter's Ore UI Customizer that this theme is made for.
+     *
+     * This must be a valid semver string, without the leading `v`.
+     *
+     * @example "1.0.0"
+     */
+    format_version: string;
+    /**
+     * The minimum version of 8Crafter's Ore UI Customizer that this theme is compatible with.
+     *
+     * This must be a valid semver string, without the leading `v`.
+     *
+     * If not specified, no check will be done.
+     *
+     * @example "1.0.0"
+     */
+    min_engine_version?: string;
+    /**
+     * The data URI of the icon of the thtme.
+     *
+     * If not specified the default icon will be used.
+     *
+     * The MIME type must match `image/*`.
+     *
+     * @example "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+     */
+    icon_data_uri?: `data:image/${string};base64,${string}`;
+    /**
+     * The dependencies of the theme.
+     */
+    dependencies?: ThemeManifestJSON["dependencies"];
+    /**
+     * Additonal metadata about the theme.
+     */
+    metadata?: {
+        /**
+         * The authors of the theme.
+         *
+         * @example ["8Crafter", "StormStqr"]
+         */
+        authors?: string[];
+        /**
+         * The URL of the website for the theme, or just the theme creator's website.
+         *
+         * @example "https://www.8crafter.com"
+         */
+        url?: string;
+        /**
+         * The type of the theme.
+         *
+         * @example "theme"
+         */
+        product_type?: "theme";
+        /**
+         * The license of the theme.
+         *
+         * @example "MIT"
+         */
+        license?: string;
+        /**
+         * Any other metadata you want to add.
+         */
+        [key: string]: unknown;
+    };
+}
+
+/**
  * A plugin for 8Crafter's Ore UI Customizer.
  */
 export interface Plugin extends Pick<PluginManifestJSON, "marketplaceDetails" | "checkForUpdatesDetails"> {
     /**
      * The display name of the plugin.
+     *
+     * @example "My Custom Plugin"
      */
     name: string;
     /**
-     * The id of the plugin, used to identify the plugin when applying the plugins, also used to identify the plugin in error messages, this should be unique.
+     * The id of the plugin, used to identify the plugin when applying the plugins, also used to identify the plugin in error messages, this should be unique when combined with the {@link namespace}.
+     *
+     * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the plugins that shared the namespace+id combo was being referred to in places like error messages.
      *
      * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+     *
+     * @example "my-custom-plugin"
      */
     id: string;
     /**
@@ -1172,9 +1370,13 @@ export interface Plugin extends Pick<PluginManifestJSON, "marketplaceDetails" | 
     /**
      * The namespace of the plugin, used in conjunction with the {@link id} to identify the plugin in error messages.
      *
+     * This can be shared by multiple plugins.
+     *
      * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
      *
      * Must not be `built-in`, as it is reserved for built-in plugins.
+     *
+     * @example "andexpl"
      */
     namespace: string;
     /**
@@ -1248,7 +1450,9 @@ export interface Plugin extends Pick<PluginManifestJSON, "marketplaceDetails" | 
          */
         product_type?: "plugin";
         /**
-         * The license of the plugin
+         * The license of the plugin.
+         *
+         * @example "MIT"
          */
         license?: string;
         /**
@@ -1274,6 +1478,8 @@ export type PluginActionContext = "per_text_file" | "per_binary_file" | "global_
 export interface PluginActionBase {
     /**
      * The id of the plugin action, used to identify the plugin action in error messages, this should be unique.
+     *
+     * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the plugins that shared the namespace+id combo was being referred to in places like error messages.
      *
      * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
      */
@@ -1370,6 +1576,6 @@ export type PluginAction = PerTextFilePluginAction | PerBinaryFilePluginAction |
 /**
  * The ID of a built-in plugin.
  */
-export type BuiltInPluginID = "add-exact-ping-count-to-servers-tab" | "add-max-player-count-to-servers-tab" | "facet-spy" | "make-export-world-button-visible";
+export type BuiltInPluginID = "add-exact-ping-count-to-servers-tab" | "add-max-player-count-to-servers-tab" | "facet-spy"| "lite-play-screen-routes" | "make-export-world-button-visible";
 
 export type { zip } from "./zip.js";
