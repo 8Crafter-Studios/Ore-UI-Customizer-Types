@@ -304,7 +304,32 @@ export interface OreUICustomizerSettings {
      * @default []
      */
     preloadedPlugins?: Plugin[];
-    // TODO: Maybe implement encoded theme data, like with encoded plugin data.
+    /**
+     * A list of additional themes to apply.
+     *
+     * This is only present when manually provided encoded theme data to apply, or when {@link bundleEncodedThemeDataInConfigFile} is true.
+     *
+     * This will not include themes from the {@link preloadedThemes} list.
+     *
+     * @default []
+     */
+    themes?: EncodedThemeData[];
+    /**
+     * Whether or not to bundle the encoded theme data in the config file.
+     *
+     * If false, it will just include some details of the active thtmes.
+     *
+     * @default false
+     */
+    bundleEncodedThemeDataInConfigFile?: boolean;
+    /**
+     * The details of the active themes.
+     *
+     * This includes themes from both {@link themes} and {@link preloadedThemes}.
+     *
+     * @default []
+     */
+    activeThemesDetails?: Omit<EncodedThemeData, "fileType" | "dataURI">[];
     /**
      * A list of themes to apply.
      *
@@ -312,9 +337,12 @@ export interface OreUICustomizerSettings {
      *
      * @default []
      */
-    themes?: Theme[];
+    preloadedThemes?: Theme[];
 }
 
+/**
+ * The data of a plugin encoded as a JSON object.
+ */
 export interface EncodedPluginData {
     /**
      * The display name of the plugin.
@@ -406,9 +434,13 @@ export interface EncodedPluginData {
                *
                * Must be a valid semver string, without the leading `v`.
                *
+               * If no version is specified, the latest available version will match, or whatever version is currently active.
+               *
+               * NOTE: This field is ignored when the dependency is a built-in theme, plugin, or config.
+               *
                * @example "3.17.4-preview.20+BUILD.5"
                */
-              version: string;
+              version?: string;
           }
         | {
               /**
@@ -422,9 +454,11 @@ export interface EncodedPluginData {
                *
                * Must be a valid semver string, without the leading `v`.
                *
+               * If no version is specified, the latest available version will match.
+               *
                * @example "3.17.4-preview.20+BUILD.5"
                */
-              version: string;
+              version?: string;
           }
     )[];
     /**
@@ -527,6 +561,222 @@ export interface EncodedPluginData {
     fileType: "js" | "mcouicplugin";
     /**
      * The data URI of the plugin.
+     */
+    dataURI: `data:${string};base64,${string}`;
+}
+
+/**
+ * The data of a theme encoded as a JSON object.
+ */
+export interface EncodedThemeData {
+    /**
+     * The display name of the theme.
+     *
+     * @example "My Custom Theme"
+     */
+    name: string;
+    /**
+     * The id of the theme, used to identify the theme when applying the themes, also used to identify the theme in error messages, this should be unique when combined with the {@link namespace}.
+     *
+     * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the themes that shared the namespace+id combo was being referred to in places like error messages.
+     *
+     * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+     *
+     * @example "my-custom-theme"
+     */
+    id: string;
+    /**
+     * The UUID of the theme, used to uniquely identify the theme.
+     *
+     * Must be a valid UUID.
+     *
+     * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
+     */
+    uuid: string;
+    /**
+     * The namespace of the theme, used in conjunction with the {@link id} to identify the theme in error messages.
+     *
+     * This can be shared by multiple themes.
+     *
+     * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+     *
+     * Must not be `built-in`, as it is reserved for built-in themes.
+     *
+     * @example "andexth"
+     */
+    namespace: string;
+    /**
+     * An optional description of the theme.
+     */
+    description?: string;
+    /**
+     * The version of the theme.
+     *
+     * This must be a valid semver string, without the leading `v`.
+     *
+     * @example "3.17.4-preview.20+BUILD.5"
+     */
+    version: string;
+    /**
+     * The version of 8Crafter's Ore UI Customizer that this theme is made for.
+     *
+     * This must be a valid semver string, without the leading `v`.
+     *
+     * @example "1.0.0"
+     */
+    format_version: string;
+    /**
+     * The minimum version of 8Crafter's Ore UI Customizer that this theme is compatible with.
+     *
+     * This must be a valid semver string, without the leading `v`.
+     *
+     * If not specified, no check will be done.
+     *
+     * @example "1.0.0"
+     */
+    min_engine_version?: string;
+    /**
+     * The data URI of the icon of the theme.
+     *
+     * If not specified the default icon will be used.
+     *
+     * The MIME type must match `image/*`.
+     *
+     * @example "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+     */
+    icon_data_uri?: `data:image/${string};base64,${string}`;
+    /**
+     * The dependencies of the theme.
+     *
+     * These dependencies can be other themes, plugins, or configs.
+     */
+    dependencies?: {
+        /**
+         * The UUID of the theme, plugin, or config dependency.
+         *
+         * Must be a valid UUID.
+         *
+         * May also be the UUID of a built-in theme or plugin to force the user to have it enabled to use the theme.
+         *
+         * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
+         */
+        uuid: string;
+        /**
+         * The version of the theme, plugin, or config dependency.
+         *
+         * Must be a valid semver string, without the leading `v`.
+         *
+         * If no version is specified, the latest available version will match, or whatever version is currently active.
+         *
+         * NOTE: This field is ignored when the dependency is a built-in theme, plugin, or config.
+         *
+         * @example "3.17.4-preview.20+BUILD.5"
+         */
+        version?: string;
+    }[];
+    /**
+     * Additonal metadata about the theme.
+     */
+    metadata: {
+        /**
+         * The authors of the theme.
+         *
+         * @example ["8Crafter", "StormStqr"]
+         */
+        authors?: string[];
+        /**
+         * The URL of the website for the theme, or just the theme creator's website.
+         *
+         * @example "https://www.8crafter.com"
+         */
+        url?: string;
+        /**
+         * The product type.
+         *
+         * @example "theme"
+         */
+        product_type: "theme";
+        /**
+         * The license of the theme.
+         *
+         * @example "MIT"
+         */
+        // IDEA: Make this use LooseAutocomplete<> with a list of example licenses.
+        license?: string;
+        /**
+         * Any other metadata you want to add.
+         */
+        [key: string]: unknown;
+    };
+    /**
+     * The details of the theme in the marketplace.
+     *
+     * This is only used if the theme is from the marketplace.
+     *
+     * This should not be included when uploading the theme to the marketplace, as the server will handle adding this information.
+     *
+     * This is mutually exclusive with {@link checkForUpdatesDetails}.
+     */
+    marketplaceDetails?: {
+        /**
+         * The id of the theme in the marketplace.
+         *
+         * Format:
+         * ```typescript
+         * `${themePublisher}.${id}`
+         * ```
+         *
+         * @example "8crafter.my-custom-theme"
+         */
+        marketplaceId: string;
+        /**
+         * The original download URL of the theme in the marketplace.
+         *
+         * @example "https://marketplace.ore-ui-customizer.8crafter.com/download/theme/8crafter.my-custom-theme/1.0.0"
+         */
+        originalDownloadURL: string;
+        /**
+         * The URL of the theme in the marketplace.
+         *
+         * @example "https://marketplace.ore-ui-customizer.8crafter.com/theme/8crafter.my-custom-theme"
+         */
+        marketplaceURL: string;
+    };
+    /**
+     * The details of the theme to check for updates.
+     *
+     * This is only used if the theme is not from the marketplace.
+     *
+     * This allows non-marketplace themes to be checked for updates.
+     *
+     * This is mutually exclusive with {@link marketplaceDetails}.
+     */
+    checkForUpdatesDetails?: {
+        /**
+         * The URL to the JSON object containing the newest version of the theme.
+         *
+         * The JSON object should have the following structure:
+         * ```json
+         * {
+         *     // The version of the theme.
+         *     "version": "1.0.1-rc.5",
+         *     // The download URL of the theme.
+         *     "url": "https://example.com/ore-ui-customizer-themes/my-custom-theme/1.0.1-rc.5/myCustomTheme.ouictheme"
+         * }
+         * ```
+         *
+         * When fetching the URL, the response should have an MIME type of `application/json` or `text/json`.
+         *
+         * @example "https://example.com/ore-ui-customizer-themes/my-custom-theme/latestVersion.json"
+         */
+        versionInfoURL: string;
+    };
+    /**
+     * The file type of the theme.
+     */
+    fileType: "mcouictheme";
+    /**
+     * The data URI of the theme.
      */
     dataURI: `data:${string};base64,${string}`;
 }
@@ -657,9 +907,13 @@ export interface PluginManifestJSON {
                *
                * Must be a valid semver string, without the leading `v`.
                *
+               * If no version is specified, the latest available version will match, or whatever version is currently active.
+               *
+               * NOTE: This field is ignored when the dependency is a built-in theme, plugin, or config.
+               *
                * @example "3.17.4-preview.20+BUILD.5"
                */
-              version: string;
+              version?: string;
           }
         | {
               /**
@@ -673,9 +927,11 @@ export interface PluginManifestJSON {
                *
                * Must be a valid semver string, without the leading `v`.
                *
+               * If no version is specified, the latest available version will match.
+               *
                * @example "3.17.4-preview.20+BUILD.5"
                */
-              version: string;
+              version?: string;
           }
     )[];
     /**
@@ -888,9 +1144,13 @@ export interface ThemeManifestJSON {
          *
          * Must be a valid semver string, without the leading `v`.
          *
+         * If no version is specified, the latest available version will match, or whatever version is currently active.
+         *
+         * NOTE: This field is ignored when the dependency is a built-in theme, plugin, or config.
+         *
          * @example "3.17.4-preview.20+BUILD.5"
          */
-        version: string;
+        version?: string;
     }[];
     /**
      * Additonal metadata about the theme.
@@ -1117,9 +1377,13 @@ export interface OreUICustomizerConfig {
              *
              * Must be a valid semver string, without the leading `v`.
              *
+             * If no version is specified, the latest available version will match, or whatever version is currently active.
+             *
+             * NOTE: This field is ignored when the dependency is a built-in theme, plugin, or config.
+             *
              * @example "3.17.4-preview.20+BUILD.5"
              */
-            version: string;
+            version?: string;
         }[];
         /**
          * The authors of the config.

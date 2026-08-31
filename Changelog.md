@@ -1,3 +1,18 @@
+# v1.3.0
+
+## Additions
+
+-   Added the following fields to the `OreUICustomzierSettings` interface:
+    -   `themes`
+    -   `bundleEncodedThemeDataInConfigFile`
+    -   `activeThemesDetails`
+-   Added the `EncodedThemeData` interface.
+
+## Changes
+
+-   The `version` fields of dependencies are now optional.
+-   Renamed the `themes` field of the `OreUICustomizerSettings` interface to `preloadedThemes`.
+
 # v1.2.1
 
 ## Fixes
