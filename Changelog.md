@@ -1,3 +1,10 @@
+# v1.2.1
+
+## Fixes
+
+-   Fixed an issue where the `min_engine_version` field of the `header` field of the `ThemeManifestJSON` interface was missing.
+-   Typo fixes.
+
 # v1.2.0
 
 ## Additions
@@ -7,7 +14,7 @@
 -   Added the `ThemeColorReplacements` interface.
 -   Added the `advancedColorReplacements` field to the `OreUICustomizerSettings` interface.
 -   Added the `themes` field to the `OreUICustomizerSettings` interface.
--   Added the `namespace` field to the `ThemeManifestJSON` interface.
+-   Added the `namespace` field to the `header` field of the `ThemeManifestJSON` interface.
 -   Add `@example` JSDoc tags to many `Plugin` and `EncodedPluginData` fields.
 
 # v1.1.0

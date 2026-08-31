@@ -88,7 +88,7 @@ export interface OreUICustomizerSettings {
     /**
      * These are replacements for the UI colors.
      *
-     * Setting a color to "" will prevent tat color from being replaced.
+     * Setting a color to "" will prevent that color from being replaced.
      */
     colorReplacements: {
         // /**
@@ -192,7 +192,7 @@ export interface OreUICustomizerSettings {
     /**
      * These are some more advanced color replacements for the UI colors.
      *
-     * Setting a color to "" will prevent tat color from being replaced.
+     * Setting a color to "" will prevent that color from being replaced.
      */
     advancedColorReplacements?: {
         /**
@@ -846,6 +846,16 @@ export interface ThemeManifestJSON {
          * @example "1.0.0"
          */
         format_version: string;
+        /**
+         * The minimum version of 8Crafter's Ore UI Customizer that this theme is compatible with.
+         *
+         * This must be a valid semver string, without the leading `v`.
+         *
+         * If not specified, no check will be done.
+         *
+         * @example "1.0.0"
+         */
+        min_engine_version?: string;
     };
     /**
      * The data URI of the icon of the theme.
@@ -909,6 +919,7 @@ export interface ThemeManifestJSON {
          *
          * @example "MIT"
          */
+        // IDEA: Make this use LooseAutocomplete<> with a list of example licenses.
         license?: string;
         /**
          * Any other metadata you want to add.
@@ -993,13 +1004,13 @@ export interface ThemeColorReplacements {
     /**
      * These are replacements for the UI colors.
      *
-     * Setting a color to "" will prevent tat color from being replaced.
+     * Setting a color to "" will prevent that color from being replaced.
      */
     colorReplacements?: Partial<OreUICustomizerSettings["colorReplacements"]>;
     /**
      * These are some more advanced color replacements for the UI colors.
      *
-     * Setting a color to "" will prevent tat color from being replaced.
+     * Setting a color to "" will prevent that color from being replaced.
      */
     advancedColorReplacements?: OreUICustomizerSettings["advancedColorReplacements"];
 }
@@ -1576,6 +1587,11 @@ export type PluginAction = PerTextFilePluginAction | PerBinaryFilePluginAction |
 /**
  * The ID of a built-in plugin.
  */
-export type BuiltInPluginID = "add-exact-ping-count-to-servers-tab" | "add-max-player-count-to-servers-tab" | "facet-spy"| "lite-play-screen-routes" | "make-export-world-button-visible";
+export type BuiltInPluginID =
+    | "add-exact-ping-count-to-servers-tab"
+    | "add-max-player-count-to-servers-tab"
+    | "facet-spy"
+    | "lite-play-screen-routes"
+    | "make-export-world-button-visible";
 
 export type { zip } from "./zip.js";
