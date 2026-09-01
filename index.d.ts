@@ -82,7 +82,7 @@ export interface OreUICustomizerSettings {
      */
     add8CrafterUtilitiesMainMenuButton: boolean;
     /**
-     * An object that lists whether or not each built in plugin is enabled.
+     * An object that lists whether or not each built-in plugin is enabled.
      */
     enabledBuiltInPlugins: Record<BuiltInPluginID, boolean>;
     /**
@@ -194,6 +194,7 @@ export interface OreUICustomizerSettings {
      *
      * Setting a color to "" will prevent that color from being replaced.
      */
+    // IDEA: Maybe make this not partial?
     advancedColorReplacements?: {
         /**
          * Color replacements options for the `menus-theme-*.css` file.
@@ -341,6 +342,47 @@ export interface OreUICustomizerSettings {
 }
 
 /**
+ * Mutates the type by making all properties optional and allowing for deep partials.
+ *
+ * @template T The type to mutate.
+ *
+ * @example
+ * ```ts
+ * type Original = { name: string; age: number }
+ * type Mutated = DeepPartial<Original>; // { name?: string; age?: number }
+ * ```
+ */
+type DeepPartial<T> =
+    T extends object ?
+        {
+            [P in keyof T]?: DeepPartial<T[P]>;
+        }
+    :   T;
+
+/**
+ * An interface that contains the settings for 8Crafter's Ore UI Customizer when stored in a config file.
+ */
+export interface OreUICustomizerConfig_Settings
+    extends
+        DeepPartial<
+            Omit<
+                OreUICustomizerSettings,
+                | "plugins"
+                | "bundleEncodedPluginDataInConfigFile"
+                | "activePluginsDetails"
+                | "preloadedPlugins"
+                | "themes"
+                | "bundleEncodedThemeDataInConfigFile"
+                | "activeThemesDetails"
+                | "preloadedThemes"
+            >
+        >,
+        Pick<
+            OreUICustomizerSettings,
+            "plugins" | "bundleEncodedPluginDataInConfigFile" | "activePluginsDetails" | "themes" | "bundleEncodedThemeDataInConfigFile" | "activeThemesDetails"
+        > {}
+
+/**
  * The data of a plugin encoded as a JSON object.
  */
 export interface EncodedPluginData {
@@ -359,7 +401,7 @@ export interface EncodedPluginData {
     /**
      * The UUID of the plugin, used to uniquely identify the plugin.
      *
-     * Must be a valid UUID.
+     * Must be a valid UUID v4.
      *
      * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
      */
@@ -422,7 +464,7 @@ export interface EncodedPluginData {
               /**
                * The UUID of the plugin dependency.
                *
-               * Must be a valid UUID.
+               * Must be a valid UUID v4.
                *
                * May also be the UUID of a built-in plugin to force the user to have it enabled to use the plugin.
                *
@@ -482,7 +524,7 @@ export interface EncodedPluginData {
          *
          * @example "plugin"
          */
-        product_type?: "plugin";
+        product_type: "plugin";
         /**
          * The license of the plugin.
          *
@@ -588,7 +630,7 @@ export interface EncodedThemeData {
     /**
      * The UUID of the theme, used to uniquely identify the theme.
      *
-     * Must be a valid UUID.
+     * Must be a valid UUID v4.
      *
      * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
      */
@@ -654,9 +696,9 @@ export interface EncodedThemeData {
         /**
          * The UUID of the theme, plugin, or config dependency.
          *
-         * Must be a valid UUID.
+         * Must be a valid UUID v4.
          *
-         * May also be the UUID of a built-in theme or plugin to force the user to have it enabled to use the theme.
+         * May also be the UUID of a built-in theme, plugin, or config to force the user to have it enabled to use the theme.
          *
          * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
          */
@@ -895,9 +937,9 @@ export interface PluginManifestJSON {
               /**
                * The UUID of the theme, plugin, or config dependency.
                *
-               * Must be a valid UUID.
+               * Must be a valid UUID v4.
                *
-               * May also be the UUID of a built-in theme or plugin to force the user to have it enabled to use the theme.
+               * May also be the UUID of a built-in theme, plugin, or config to force the user to have it enabled to use the theme.
                *
                * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
                */
@@ -1065,7 +1107,7 @@ export interface ThemeManifestJSON {
         /**
          * The UUID of the theme, used to uniquely identify the theme.
          *
-         * Must be a valid UUID.
+         * Must be a valid UUID v4.
          *
          * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
          */
@@ -1132,9 +1174,9 @@ export interface ThemeManifestJSON {
         /**
          * The UUID of the theme, plugin, or config dependency.
          *
-         * Must be a valid UUID.
+         * Must be a valid UUID v4.
          *
-         * May also be the UUID of a built-in theme or plugin to force the user to have it enabled to use the theme.
+         * May also be the UUID of a built-in theme, plugin, or config to force the user to have it enabled to use the theme.
          *
          * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
          */
@@ -1282,7 +1324,7 @@ export interface OreUICustomizerConfig {
     /**
      * The settings for 8Crafter's Ore UI Customizer.
      */
-    oreUICustomizerConfig: OreUICustomizerSettings;
+    oreUICustomizerConfig: OreUICustomizerConfig_Settings;
     /**
      * The version of 8Crafter's Ore UI Customizer.
      */
@@ -1317,9 +1359,9 @@ export interface OreUICustomizerConfig {
          *
          * This is required if the config is from the marketplace, or if you wish to have a plugin or theme require the config as a dependency.
          *
-         * If it is not specified a new UUID will be generated.
+         * If it is not specified a new UUID will be generated upon import.
          *
-         * Must be a valid UUID.
+         * Must be a valid UUID v4.
          *
          * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
          *
@@ -1365,9 +1407,9 @@ export interface OreUICustomizerConfig {
             /**
              * The UUID of the theme, plugin, or config dependency.
              *
-             * Must be a valid UUID.
+             * Must be a valid UUID v4.
              *
-             * May also be the UUID of a built-in theme or plugin to force the user to have it enabled to use the theme.
+             * May also be the UUID of a built-in theme, plugin, or config to force the user to have it enabled to use the theme.
              *
              * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
              */
@@ -1484,7 +1526,7 @@ export interface OreUICustomizerConfig {
  *
  * @deprecated
  */
-export interface LegacyOreUICustomizerConfigJSON extends Partial<OreUICustomizerSettings> {
+export interface LegacyOreUICustomizerConfigJSON extends OreUICustomizerConfig_Settings {
     /**
      * The version of 8Crafter's Ore UI Customizer.
      */
@@ -1514,7 +1556,7 @@ export interface Theme extends Pick<ThemeManifestJSON, "marketplaceDetails" | "c
     /**
      * The UUID of the theme, used to uniquely identify the theme.
      *
-     * Must be a valid UUID.
+     * Must be a valid UUID v4.
      *
      * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
      */
@@ -1600,7 +1642,7 @@ export interface Theme extends Pick<ThemeManifestJSON, "marketplaceDetails" | "c
          *
          * @example "theme"
          */
-        product_type?: "theme";
+        product_type: "theme";
         /**
          * The license of the theme.
          *
@@ -1637,7 +1679,7 @@ export interface Plugin extends Pick<PluginManifestJSON, "marketplaceDetails" | 
     /**
      * The UUID of the plugin, used to uniquely identify the plugin.
      *
-     * Must be a valid UUID.
+     * Must be a valid UUID v4.
      *
      * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
      */
@@ -1723,7 +1765,7 @@ export interface Plugin extends Pick<PluginManifestJSON, "marketplaceDetails" | 
          *
          * @example "plugin"
          */
-        product_type?: "plugin";
+        product_type: "plugin";
         /**
          * The license of the plugin.
          *

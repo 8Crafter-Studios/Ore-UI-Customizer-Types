@@ -1,3 +1,20 @@
+# v1.4.0
+
+## Additions
+
+-   Added the `OreUICustomizerConfig_Settings` inteface.
+
+## Changes
+
+-   Many improvements to the typings of the `zip` namespace, places that used to use a type of `ZipEntry` now use a union type of `ZipDirectoryEntry | ZipFileEntry<any, any>`.
+-   The `product_type` fields of many interfaces are no longer optional.
+-   The `oreUICustomizerConfig` field of the `OreUICustomizerConfig` interface now uses the type `OreUICustomizerConfig_Settings` instead of `OreUICustomizerSettings`.
+-   The `LegacyOreUICustomizerConfigJSON` interface now extends `OreUICustomizerConfig_Settings` instead of `Partial<OreUICustomizerSettings>`.
+
+## Fixes
+
+-   Minor documentation fixes.
+
 # v1.3.0
 
 ## Additions
