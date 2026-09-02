@@ -617,16 +617,16 @@ export interface EncodedThemeData {
      * @example "My Custom Theme"
      */
     name: string;
-    /**
-     * The id of the theme, used to identify the theme when applying the themes, also used to identify the theme in error messages, this should be unique when combined with the {@link namespace}.
-     *
-     * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the themes that shared the namespace+id combo was being referred to in places like error messages.
-     *
-     * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
-     *
-     * @example "my-custom-theme"
-     */
-    id: string;
+    // /**
+    //  * The id of the theme, used to identify the theme when applying the themes, also used to identify the theme in error messages, this should be unique when combined with the {@link namespace}.
+    //  *
+    //  * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the themes that shared the namespace+id combo was being referred to in places like error messages.
+    //  *
+    //  * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+    //  *
+    //  * @example "my-custom-theme"
+    //  */
+    // id: string;
     /**
      * The UUID of the theme, used to uniquely identify the theme.
      *
@@ -635,18 +635,18 @@ export interface EncodedThemeData {
      * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
      */
     uuid: string;
-    /**
-     * The namespace of the theme, used in conjunction with the {@link id} to identify the theme in error messages.
-     *
-     * This can be shared by multiple themes.
-     *
-     * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
-     *
-     * Must not be `built-in`, as it is reserved for built-in themes.
-     *
-     * @example "andexth"
-     */
-    namespace: string;
+    // /**
+    //  * The namespace of the theme, used in conjunction with the {@link id} to identify the theme in error messages.
+    //  *
+    //  * This can be shared by multiple themes.
+    //  *
+    //  * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+    //  *
+    //  * Must not be `built-in`, as it is reserved for built-in themes.
+    //  *
+    //  * @example "andexth"
+    //  */
+    // namespace: string;
     /**
      * An optional description of the theme.
      */
@@ -1094,16 +1094,16 @@ export interface ThemeManifestJSON {
          * @example "My Custom Theme"
          */
         name: string;
-        /**
-         * The id of the theme, used to identify the theme when applying the themes, also used to identify the theme in error messages, this should be unique when combined with the {@link namespace}.
-         *
-         * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the themes that shared the namespace+id combo was being referred to in places like error messages.
-         *
-         * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
-         *
-         * @example "my-custom-theme"
-         */
-        id: string;
+        // /**
+        //  * The id of the theme, used to identify the theme when applying the themes, also used to identify the theme in error messages, this should be unique when combined with the {@link namespace}.
+        //  *
+        //  * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the themes that shared the namespace+id combo was being referred to in places like error messages.
+        //  *
+        //  * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+        //  *
+        //  * @example "my-custom-theme"
+        //  */
+        // id: string;
         /**
          * The UUID of the theme, used to uniquely identify the theme.
          *
@@ -1112,18 +1112,18 @@ export interface ThemeManifestJSON {
          * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
          */
         uuid: string;
-        /**
-         * The namespace of the theme, used in conjunction with the {@link id} to identify the theme in error messages.
-         *
-         * This can be shared by multiple themes.
-         *
-         * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
-         *
-         * Must not be `built-in`, as it is reserved for built-in themes.
-         *
-         * @example "andexth"
-         */
-        namespace: string;
+        // /**
+        //  * The namespace of the theme, used in conjunction with the {@link id} to identify the theme in error messages.
+        //  *
+        //  * This can be shared by multiple themes.
+        //  *
+        //  * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+        //  *
+        //  * Must not be `built-in`, as it is reserved for built-in themes.
+        //  *
+        //  * @example "andexth"
+        //  */
+        // namespace: string;
         /**
          * An optional description of the theme.
          */
@@ -1543,16 +1543,16 @@ export interface Theme extends Pick<ThemeManifestJSON, "marketplaceDetails" | "c
      * @example "My Custom Theme"
      */
     name: string;
-    /**
-     * The id of the theme, used to identify the theme when applying the themes, also used to identify the theme in error messages, this should be unique when combined with the {@link namespace}.
-     *
-     * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the themes that shared the namespace+id combo was being referred to in places like error messages.
-     *
-     * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
-     *
-     * @example "my-custom-theme"
-     */
-    id: string;
+    // /**
+    //  * The id of the theme, used to identify the theme when applying the themes, also used to identify the theme in error messages, this should be unique when combined with the {@link namespace}.
+    //  *
+    //  * Note that even if the namespace+id combo isn't unique, that won't cause it to not function, it will just cause abiguity as to which of the themes that shared the namespace+id combo was being referred to in places like error messages.
+    //  *
+    //  * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+    //  *
+    //  * @example "my-custom-theme"
+    //  */
+    // id: string;
     /**
      * The UUID of the theme, used to uniquely identify the theme.
      *
@@ -1561,18 +1561,18 @@ export interface Theme extends Pick<ThemeManifestJSON, "marketplaceDetails" | "c
      * @example "39a5d251-b6e0-47db-92d1-317eaa7dfe44"
      */
     uuid: string;
-    /**
-     * The namespace of the theme, used in conjunction with the {@link id} to identify the theme in error messages.
-     *
-     * This can be shared by multiple themes.
-     *
-     * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
-     *
-     * Must not be `built-in`, as it is reserved for built-in themes.
-     *
-     * @example "andexth"
-     */
-    namespace: string;
+    // /**
+    //  * The namespace of the theme, used in conjunction with the {@link id} to identify the theme in error messages.
+    //  *
+    //  * This can be shared by multiple themes.
+    //  *
+    //  * Must consist only of alphanumeric characters, underscores, hyphens, and periods.
+    //  *
+    //  * Must not be `built-in`, as it is reserved for built-in themes.
+    //  *
+    //  * @example "andexth"
+    //  */
+    // namespace: string;
     /**
      * An optional description of the theme.
      */

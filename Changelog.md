@@ -1,3 +1,9 @@
+# v1.5.0
+
+## Removals
+
+-   Removed the `id` and `namespace` fields from themes.
+
 # v1.4.0
 
 ## Additions
